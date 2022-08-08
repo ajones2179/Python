@@ -1,0 +1,60 @@
+#1. Import the relevant libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
+from sklearn.linear_model import LinearRegression   #machine learning library
+
+
+#2. Load the data
+data = pd.read_csv('real_estate_price_size.csv')
+data.head()
+
+
+#3. Create the regression
+x = data['size']     #input (aka feature)
+y = data['price']     #output (aka target)
+
+x.shape()           #check the dimensions
+y.shape()
+
+x_matrix = x.values.reshape(-1,1)   #reshape the feature into a 2D matrix
+x_matrix.shape
+
+reg = LinearRegression()    #linear regression class instance
+reg.fit(x_matrix,y)         #fit the regression using the arguments
+reg.get_params()
+
+
+#4. Calculations
+#R-squared
+reg.score(x_matrix,y)
+
+#Coefficients
+reg.coef_
+
+#Intercept
+reg.intercept_
+
+
+#5. Make predictions
+reg.predict(750)
+
+new_data = pd.DataFrame(data=[500,1200],columns=['price'])
+new_data
+
+reg.predict(new_data)
+
+new_data['Predicted_Price'] = reg.predict(new_data)
+new_data
+
+
+#6. Visualize regression
+plt.scatter(x,y)
+yhat = reg.coef_*x_matrix + reg.intercept_
+#yhat = 223.1787*x1 + 1.019e+05
+fig = plt.plot(x,yhat, lw=4, c='orange', label='regression line')
+plt.xlabel('size', fontsize=20)
+plt.ylabel('price', fontsize=20)
+plt.show()
