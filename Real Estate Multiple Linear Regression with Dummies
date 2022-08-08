@@ -29,3 +29,11 @@ x1 = data[['size','year','view']]         #data frame containing both series
 x = sm.add_constant(x1)
 results = sm.OLS(y,x).fit()
 results.summary()
+
+
+#Make Predictions with the regression
+x
+
+new_data = pd.DataFrame({'const':1,'size':[500,1200], 'view':[0,1]})    #create a new data frame with the parameters I'm looking for
+new_data = new_data[['const','size','view']]
+new_data
