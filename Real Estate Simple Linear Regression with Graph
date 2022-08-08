@@ -26,6 +26,7 @@ plt.show()
 #regression itself
 x = sm.add_constant(x1)             #declare new variable constant x for regression equation
 results = sm.OLS(y,x).fit()         #declare new variable results to contain output for ordinary least squares regression
+
 results.summary()
 
 
