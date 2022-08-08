@@ -1,23 +1,23 @@
-#Import revelant libraries
-import numpy as np 
-import pandas as pd 
-import matplotlib.pyplot as plt 
-import statsmodels.api as sm 
-import seaborn 
-seaborn.set()
+#1. Import revelant libraries
+import numpy as np                    #math
+import pandas as pd                   #data analysis
+import matplotlib.pyplot as plt       #data visualization
+import statsmodels.api as sm          #stats (regression)
+import seaborn as sns                 #make graphs pretty
+sns.set()
 
-#Load the data
+
+#2. Load the data
 data = pd.read_csv('real_estate_price_size_year.csv')
 data
 
 data.describe()
 
-#Create the regression
-#First, declare the independent and dependent variables
-y = data['price']
-x1 = data[['size','year']]
 
-#Now, regression
+#3. Create the regression
+y = data['price']
+x1 = data[['size','year']]            #data frame containing both series
+
 x = sm.add_constant(x1)
 results = sm.OLS(y,x).fit()
 
