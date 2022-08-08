@@ -31,9 +31,16 @@ results = sm.OLS(y,x).fit()
 results.summary()
 
 
-#Make Predictions with the regression
+#Make Predictions using the regression
 x
 
-new_data = pd.DataFrame({'const':1,'size':[500,1200], 'view':[0,1]})    #create a new data frame with the parameters I'm looking for
-new_data = new_data[['const','size','view']]
+new_data = pd.DataFrame({'const':1,'size':[500,1200],'year':2010,'view':[0,1]})    #create a new data frame with the parameters I'm looking for
+new_data = new_data[['const','size','year','view']]
 new_data
+
+predictions = results.predict(new_data)                         #calculate the predicted y-values based on the inputs from new_data
+predictions
+
+predictionsdf = pd.DataFrame({'Predictions':predictions})       #create a data frame with the predictions
+joined = new_data.join(predictionsdf)                           #add the predictions to the new_data data frame
+joined
