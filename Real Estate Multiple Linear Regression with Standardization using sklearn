@@ -1,0 +1,65 @@
+#1. Import relevant libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
+from sklearn.linear_model import LinearRegression
+
+
+#2. Load the data
+data = pd.read('real_estate_price_size_year.csv')
+data.head()
+data.describe()
+
+
+#3. Declare independent and dependent variables
+x = data[['size','year']]
+y = data['price']
+
+
+#4. Standardize the inputs
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+scaler.fit(x)                       #calculates mean & stdev of each object
+x_scaled = scaler.transform(x)      #apply calculations to every value of x 
+x_scaled
+
+
+#5. Regression with scaled features
+reg = LinearRegression()
+reg.fit(x_scaled,y)
+reg.get_params()
+
+#coefficients
+reg.coef_
+
+#intercept
+reg.intercept_
+
+#R-squared
+reg.score(x_scaled,y)
+
+#adjusted R-squared
+def adj_r2(x,y):
+    x.shape
+    r2 = reg.score(x,y)
+    n = x.shape[0]
+    p = x.shape[1]
+    return 1-(1-r2)*(n-1)/(n-p-1)
+adj_r2(x_scaled,y)
+
+#p-values from feature selection
+from sklearn.feature_selection import f_regression
+f_regression(x_scaled,y)
+p_values = f_regression(x_scaled,y)[1]
+p_values
+p_values.round(3)
+
+
+#6. Create a summary table
+reg_summary = pd.DataFrame(data = x.columns.values, columns = ['Features'])
+reg_summary ['Intercept'] = reg.intercept_
+reg_summary ['Coefficients'] = reg.coef_
+reg_summary ['p-value'] = p_values.round(3)
+reg_summary
