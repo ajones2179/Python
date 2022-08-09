@@ -1,0 +1,61 @@
+#1. Import relevant libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
+from sklearn.linear_model import LinearRegression
+
+
+#2. Load the data
+data = pd.read('real_estate_price_size_year.csv')
+data.head()
+
+data.describe()
+
+
+#3. Create regression
+x = data[['size','year']]       #features
+y = data['price']               #target
+
+reg = LinearRegression()
+reg.fit(x,y)
+reg.get_params()
+
+
+#4. Interpret results
+reg.coef_               #coefficients
+reg.intercept_          #intercept
+reg.score(x,y)          #R-squared
+
+#calculate adjusted R-squared (better for multiple variables)
+def adj_r2():
+    r2 = reg.score(x,y)
+    n = x.shape[0]
+    p = x.shape[1]
+    return 1-(1-r2)*(n-1)/(n-p-1)
+adj_r2(x,y)
+
+
+#5. Feature selection
+from sklearn.feature_selection import f_regression
+
+f_regression(x,y)
+
+p_values = f_regression(x,y)[1]
+p_values
+
+p_values.round(3)       #see which p-values are low enough to reject/remove feature
+
+
+#7. Make predictions
+reg.predict([[750,2009]])
+
+
+#8. Create summary table
+reg_summary = pd.DataFrame(data=x.columns.values, columns=['Features'])
+reg_summary
+
+reg_summary ['Coefficients'] = reg.coef_
+reg_summary ['p-values'] = p_values.round(3)
+reg_summary
